@@ -1,0 +1,41 @@
+:root {
+  --small: 0.9rem;
+  --medium: 1.3rem;
+  --big: 1.8rem;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: var(--small);
+}
+.navbar {
+  padding: 2%;
+  width: 100%;
+  background-color: rgb(1, 1, 98);
+}
+.menu_nasa {
+  color: white;
+  margin: 0;
+  font-size: var(--big);
+}
+section {
+  width: 90%;
+  margin: 0 auto;
+}
+section h2 {
+  /* display: flex; */
+  background-color: rgb(1, 1, 98);
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+details {
+  margin: 0 auto;
+  padding: 20px;
+}
+summary {
+  color: rgb(1, 1, 98);
+}
