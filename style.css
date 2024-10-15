@@ -32,10 +32,18 @@ section h2 {
   padding: 10px;
   border-radius: 10px;
 }
+#pic-of-the-day {
+  width: 90%;
+  margin: 0 5%;
+}
 details {
   margin: 0 auto;
   padding: 20px;
 }
 summary {
   color: rgb(1, 1, 98);
+}
+.container-gallery {
+  display: flex;
+  flex-wrap: wrap;
 }
