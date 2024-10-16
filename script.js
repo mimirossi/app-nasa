@@ -7,8 +7,15 @@ let DetailsOfTheDay = document.querySelector("#details-of-the-day");
 let DescriptionOfTheDay = document.querySelector("#description-of-the-day");
 let ArtistOfTheDay = document.querySelector("#artist-of-the-day");
 let ContainerGallery = document.querySelector("#container-gallery");
+let modalWindow = document.querySelector("#modal-window");
+let modalTitle = document.querySelector("#modal-title");
+let modalPic = document.querySelector("#modal-picture");
+let modalText = document.querySelector("#modal-text");
+let modalCite = document.querySelector("#modal-copyright");
+let closeButton = document.getElementsByClassName("close")[0];
 
 let dateMill = Date.now();
+console.log(dateMill);
 let days = convertDaysInMillis(12);
 let startMill = dateMill - days;
 function convertDaysInMillis(numberOfDays) {
@@ -21,7 +28,6 @@ function formatDate(millis) {
     date.getMonth() + 1,
     date.getDate(),
   ];
-  // Ritorno la stringa formulata correttamente
   return `${year}-${month}-${day}`;
   // let year = date.getFullYear();
   // let month = date.getMonth() + 1;
@@ -30,27 +36,30 @@ function formatDate(millis) {
 }
 let end = formatDate(dateMill);
 let start = formatDate(startMill);
-// let year = date.getFullYear();
-// let month = date.getMonth() + 1;
-// let day = date.getDate();
-// let todayDate = `${year}-${month}-${day}`;
+
 const APIKEY = "nUUwEjG2l0a7DiYwbc89bfsQ33NFLtKoZoFQIgoe";
-const APODURL = `https://api.nasa.gov/planetary/apod?api_key=${APIKEY}&start_date=${start}&end_date=${end}&thumbs=true`;
+const APODURL = `https://api.nasa.gov/planetary/apod?start_date=${start}&end_date=${end}&api_key=${APIKEY}&thumbs=true`;
 
 fetch(APODURL)
   .then((res) => res.json())
-  .then((pic) => loadpicOfTheDay(pic));
-// .then((pic) => console.log(pic));
+  .then((pic) => {
+    // console.log(pic);
+    loadpicOfTheDay(pic.at(-1));
+    loadGallery(pic.reverse().slice(1));
+  });
 
 function loadpicOfTheDay(pic) {
-  titleOfTheDay = checkTitle(pic);
+  picOfTheDay.src = checkMediaType(pic);
+  if (pic.title) {
+    titleOfTheDay.textContent = pic.title;
+  } else {
+    titleOfTheDay.textContent = "Titolo non Disponibile";
+  }
   DescriptionOfTheDay.textContent = pic.explanation;
   ArtistOfTheDay.textContent = pic.copyright;
-  picOfTheDay.src = checkMediaType(pic);
-  // picOfTheDay.src = pic.url;
-  DetailsOfTheDay.append(ArtistOfTheDay);
-  DetailsOfTheDay.append(DescriptionOfTheDay);
   DetailsOfTheDay.append(titleOfTheDay);
+  DetailsOfTheDay.append(DescriptionOfTheDay);
+  DetailsOfTheDay.append(ArtistOfTheDay);
   articleOfTheDay.append(picOfTheDay);
 }
 function checkMediaType(pic) {
@@ -63,13 +72,37 @@ function checkMediaType(pic) {
   //   pic.innerHTML = `<h2 class="title-section">Picture Not Available</h2>`;
   // }
 }
-function checkTitle(pic) {
-  if (pic.title) {
-    titleOfTheDay.textContent = pic.title;
-  } else {
-    titleOfTheDay.textContent = "Titolo non Disponibile";
-  }
+
+function loadGallery(pic) {
+  pic.map((pic) => {
+    let picContainer = document.createElement("div");
+    let picElement = document.createElement("img");
+    picElement.classList.add("pic-element");
+    picElement.src = checkMediaType(pic);
+    picContainer.append(picElement);
+    ContainerGallery.append(picContainer);
+    picContainer.addEventListener("click", () => {
+      showDetails(pic);
+    });
+  });
 }
-// function loadGallery(pic) {
-//   let picContainer = document.createElement("img");
-// }
+function showDetails(pic) {
+  modalWindow.style.display = "block";
+  modalTitle.textContent = pic.title;
+  modalPic.src = checkMediaType(pic);
+  modalText.textContent = pic.explanation;
+  modalCite.textContent = pic.copyright;
+}
+closeButton.addEventListener("click", () => {
+  modalWindow.style.display = "none";
+});
+window.onclick = function (event) {
+  if (event.target == modalWindow) {
+    modalWindow.style.display = "none";
+  }
+};
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    modalWindow.style.display = "none";
+  }
+});

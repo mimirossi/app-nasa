@@ -11,16 +11,31 @@
     <nav class="navbar">
       <p class="menu_nasa">NASA</p>
     </nav>
-    <section id="article-of-the-day">
-      <h2 class="title-section">Astronomy picture of the day</h2>
-      <a href=""><img id="pic-of-the-day" src="" /></a>
-      <details id="details-of-the-day">
-        <summary class="details-of-the-day">Scopri di più</summary>
-        <h3 id="title-of-the-day"></h3>
-        <p id="description-of-the-day">Stiamo bene</p>
-        <cite id="artist-of-the-day">Miriam</cite>
-      </details>
+    <section>
+      <section id="article-of-the-day">
+        <h2 class="title-section">Astronomy picture of the day</h2>
+        <img id="pic-of-the-day" src="" />
+        <details id="details-of-the-day">
+          <summary class="details-of-the-day">Scopri di più</summary>
+          <h3 id="title-of-the-day"></h3>
+          <p id="description-of-the-day"></p>
+          <cite id="artist-of-the-day"></cite>
+        </details>
+      </section>
+      <h2 class="title-section size">Last Astronomy pictures</h2>
+      <p class="gallery-text">Clicca sulle immagini e scopri i dettagli</p>
+      <article id="container-gallery"></article>
+      <div id="modal-window" class="modal">
+        <div class="modal-content">
+          <div class="container-modal-title">
+            <h2 id="modal-title" class="padding"></h2>
+            <button class="close">CLOSE</button>
+          </div>
+          <img id="modal-picture" src="" alt="" />
+          <p id="modal-text" class="padding"></p>
+          <cite id="modal-copyright" class="padding"></cite>
+        </div>
+      </div>
     </section>
-    <article id="container-gallery"></article>
   </body>
 </html>
