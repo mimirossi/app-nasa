@@ -15,6 +15,8 @@ body {
   padding: 2%;
   width: 100%;
   background-color: rgb(1, 1, 98);
+  position: fixed;
+  top: 0;
 }
 .menu_nasa {
   color: white;
@@ -31,6 +33,7 @@ section {
   color: white;
   padding: 10px;
   border-radius: 10px;
+  margin-top: 100px;
 }
 .size {
   width: 90%;
@@ -119,4 +122,61 @@ summary {
   color: rgb(255, 242, 0);
   text-decoration: none;
   cursor: pointer;
+}
+.frecce {
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.fa-solid {
+  font-size: 30px;
+}
+#loading {
+  display: none;
+}
+.container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.loader {
+  width: 80px;
+  height: 80px;
+  background-color: rgb(1, 1, 98);
+  border-radius: 50%;
+  transform: scale(0);
+  animation-duration: 1.5s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+}
+
+.loader:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0);
+  }
+  45% {
+    transform: scale(1);
+  }
+  85% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+.loading {
+  color: rgb(1, 1, 98);
+  font-size: var(--big);
+  text-align: center;
+  margin: 200px;
+  margin-bottom: 20px;
 }

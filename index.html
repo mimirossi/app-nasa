@@ -5,12 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nasa_Apod</title>
     <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/34eba3fe6d.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="script.js" defer></script>
   </head>
   <body>
     <nav class="navbar">
       <p class="menu_nasa">NASA</p>
     </nav>
+    <div id="loading">
+    <h3 class="loading"> WAITING FOR DATA...</h3>
+    <div class="container"> 
+      <div class="loader"></div>
+      <div class="loader"></div>
+      <div class="loader"></div>
+    </div>
+  </div>
     <section>
       <section id="article-of-the-day">
         <h2 class="title-section">Astronomy picture of the day</h2>
@@ -31,7 +43,13 @@
             <h2 id="modal-title" class="padding"></h2>
             <button class="close">CLOSE</button>
           </div>
-          <img id="modal-picture" src="" alt="" />
+          <div class="modal-picture-arrow">
+            <img id="modal-picture" src="" alt=""></img>
+          <div class="frecce">
+            <i id="prev" class="fa-solid fa-arrow-left"></i>
+            <i id="next" class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
           <p id="modal-text" class="padding"></p>
           <cite id="modal-copyright" class="padding"></cite>
         </div>

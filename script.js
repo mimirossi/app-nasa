@@ -13,6 +13,9 @@ let modalPic = document.querySelector("#modal-picture");
 let modalText = document.querySelector("#modal-text");
 let modalCite = document.querySelector("#modal-copyright");
 let closeButton = document.getElementsByClassName("close")[0];
+let prev = document.querySelector("#prev");
+let next = document.querySelector("#next");
+let loader = document.querySelector("#loading");
 
 let dateMill = Date.now();
 console.log(dateMill);
@@ -39,15 +42,20 @@ let start = formatDate(startMill);
 
 const APIKEY = "nUUwEjG2l0a7DiYwbc89bfsQ33NFLtKoZoFQIgoe";
 const APODURL = `https://api.nasa.gov/planetary/apod?start_date=${start}&end_date=${end}&api_key=${APIKEY}&thumbs=true`;
-
+loader.style.display = "block";
 fetch(APODURL)
   .then((res) => res.json())
   .then((pic) => {
     // console.log(pic);
+    loader.style.display = "none";
     loadpicOfTheDay(pic.at(-1));
     loadGallery(pic.reverse().slice(1));
   });
-
+// .catch((error) => {
+//   // Nascondi il div di caricamento anche in caso di errore
+//   loader.style.display = "none";
+//   console.error("Errore durante il fetch dei dati:", error);
+// });
 function loadpicOfTheDay(pic) {
   picOfTheDay.src = checkMediaType(pic);
   if (pic.title) {
@@ -72,7 +80,8 @@ function checkMediaType(pic) {
   //   pic.innerHTML = `<h2 class="title-section">Picture Not Available</h2>`;
   // }
 }
-
+let arrayOfpics = [];
+let indexArray = 0;
 function loadGallery(pic) {
   pic.map((pic) => {
     let picContainer = document.createElement("div");
@@ -81,12 +90,25 @@ function loadGallery(pic) {
     picElement.src = checkMediaType(pic);
     picContainer.append(picElement);
     ContainerGallery.append(picContainer);
+    arrayOfpics.push(pic);
     picContainer.addEventListener("click", () => {
       showDetails(pic);
     });
   });
 }
 function showDetails(pic) {
+  indexArray = arrayOfpics.findIndex((element) => element === pic);
+
+  if (indexArray <= 0) {
+    prev.style.display = "none";
+  } else {
+    prev.style.display = "block";
+  }
+  if (indexArray >= arrayOfpics.length - 1) {
+    next.style.display = "none";
+  } else {
+    next.style.display = "block";
+  }
   modalWindow.style.display = "block";
   modalTitle.textContent = pic.title;
   modalPic.src = checkMediaType(pic);
@@ -96,6 +118,13 @@ function showDetails(pic) {
 closeButton.addEventListener("click", () => {
   modalWindow.style.display = "none";
 });
+prev.addEventListener("click", () => {
+  showDetails(arrayOfpics[indexArray - 1]);
+});
+next.addEventListener("click", () => {
+  showDetails(arrayOfpics[indexArray + 1]);
+});
+
 window.onclick = function (event) {
   if (event.target == modalWindow) {
     modalWindow.style.display = "none";
