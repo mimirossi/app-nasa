@@ -9,11 +9,12 @@
       src="https://kit.fontawesome.com/34eba3fe6d.js"
       crossorigin="anonymous"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
     <script src="script.js" defer></script>
   </head>
   <body>
     <nav class="navbar">
-      <p class="menu_nasa">NASA</p>
+      <p class="menu_nasa">NASA API</p>
     </nav>
     <div id="loading">
     <h3 class="loading"> WAITING FOR DATA...</h3>
@@ -34,6 +35,12 @@
           <cite id="artist-of-the-day"></cite>
         </details>
       </section>
+      <div class="chart-container">
+        <h2 class="title-section">Curiosity Data</h2>
+        <p id="curiosity-text"></p>
+        <p class="titolo_grafico"> Last Martian Year temperatures day by day (1 Martian Year = 668 sols)</p>
+        <canvas id="myChart"></canvas>
+      </div>
       <h2 class="title-section size">Last Astronomy pictures</h2>
       <p class="gallery-text">Clicca sulle immagini e scopri i dettagli</p>
       <article id="container-gallery"></article>

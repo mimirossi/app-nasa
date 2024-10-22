@@ -16,6 +16,7 @@ let closeButton = document.getElementsByClassName("close")[0];
 let prev = document.querySelector("#prev");
 let next = document.querySelector("#next");
 let loader = document.querySelector("#loading");
+let ctx = document.querySelector("#myChart");
 
 let dateMill = Date.now();
 console.log(dateMill);
@@ -135,3 +136,95 @@ window.addEventListener("keydown", (e) => {
     modalWindow.style.display = "none";
   }
 });
+const MARS_DATA_URL =
+  // "https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json";
+  "https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json";
+const MARS_DAYS = 50;
+const MARS_YEAR = 668;
+async function getMarsData() {
+  const response = await fetch(MARS_DATA_URL);
+  const marsData = await response.json();
+  let lastMartianYear = marsData.soles.slice(0, MARS_DAYS).reverse();
+  return lastMartianYear;
+}
+async function getDataofToday() {
+  const response = await fetch(MARS_DATA_URL);
+  const marsData = await response.json();
+  let todayWeather = marsData.soles[0]; // Sol del giorno attuale
+  return todayWeather;
+}
+async function updateMarsWeather() {
+  let todayWeather = await getDataofToday();
+  let marsWeatherElement = document.querySelector("#curiosity-text");
+  marsWeatherElement.innerHTML = `
+    <p>Hi from Curiosity!<br>
+    This is my <strong>${todayWeather.sol}</strong> Martian day.<br>
+    Today it's <strong>${todayWeather.atmo_opacity}</strong>, min temp is
+    <strong>${todayWeather.min_temp}°</strong> and max temp is
+    <strong>${todayWeather.max_temp}°</strong>.</p>
+  `;
+}
+async function startProgram() {
+  let marsYearData = await getMarsData();
+  let descriptionMarsData = await updateMarsWeather();
+  drawChart(marsYearData);
+}
+startProgram();
+
+function drawChart(weatherData) {
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      datasets: [
+        {
+          label: "Max temp",
+          data: weatherData,
+          borderColor: "rgb(1, 1, 98)",
+          tension: 0.3,
+          //linea tempeartura massima
+        },
+        {
+          //linea temp.min
+          label: "Min temp",
+          data: weatherData,
+          borderColor: "rgb(85, 85, 101)",
+          tension: 0.3,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Giorni di Marte(sol) ",
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: "Temperatura in °C ",
+          },
+        },
+      },
+      //con parsing dici al porgramma quali info prendere dall'oggetto dato in data
+      parsing: {
+        xAxisKey: ["sol"],
+        yAxisKey: ["max_temp", "min_temp"],
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            // aggiorniamo la tooltip per mostrare l'unità di misura.
+            // lo facciamo ricostruendo la stringa mostrata nella tooltip:
+            // mettiamo l'etichetta del dataset, la temperatura e l'unità di misura
+            label: function (ctx) {
+              return `${ctx.dataset.label}: ${ctx.parsed.y} °C`;
+            },
+          },
+        },
+      },
+    },
+  });
+}
