@@ -198,13 +198,13 @@ function drawChart(weatherData) {
         x: {
           title: {
             display: true,
-            text: "Giorni di Marte(sol) ",
+            text: "Mars'Days(sol) ",
           },
         },
         y: {
           title: {
             display: true,
-            text: "Temperatura in °C ",
+            text: "Temperature in °C ",
           },
         },
       },
