@@ -17,6 +17,7 @@ let prev = document.querySelector("#prev");
 let next = document.querySelector("#next");
 let loader = document.querySelector("#loading");
 let ctx = document.querySelector("#myChart");
+let ctx_due = document.querySelector("#myChart-due");
 
 let dateMill = Date.now();
 console.log(dateMill);
@@ -153,6 +154,23 @@ async function getDataofToday() {
   let todayWeather = marsData.soles[0]; // Sol del giorno attuale
   return todayWeather;
 }
+async function getEveryThirtyDaysWeather() {
+  const response = await fetch(MARS_DATA_URL);
+  const marsData = await response.json();
+  let formattedData = marsData.soles.reduce((acc, data, i) => {
+    // creiamo un array più piccolo estraendo solo un oggetto ogni 30
+    if (i % 30 === 0) {
+      acc.push({
+        label: data.sol,
+        min_temp: +data.min_temp,
+        max_temp: +data.max_temp,
+      });
+    }
+    return acc;
+  }, []);
+  formattedData = formattedData.reverse();
+  return formattedData;
+}
 async function updateMarsWeather() {
   let todayWeather = await getDataofToday();
   let marsWeatherElement = document.querySelector("#curiosity-text");
@@ -167,10 +185,27 @@ async function updateMarsWeather() {
 async function startProgram() {
   let marsYearData = await getMarsData();
   let descriptionMarsData = await updateMarsWeather();
+  let thirtyDaysWeather = await getEveryThirtyDaysWeather();
   drawChart(marsYearData);
+  drawChartDue(thirtyDaysWeather);
 }
 startProgram();
-
+// function drawChartDue(thirtyDaysWeather) {
+//   new Chart(ctx_due, {
+//     type: "bubble",
+//     data: {
+//       datasets: [
+//         {
+//           label: "Max Temp",
+//           x: 50,
+//           y: 30,
+//           r: 15,
+//         },
+//       ],
+//       backgroundColor: " rgb(1, 1, 98)",
+//     },
+//   });
+// }
 function drawChart(weatherData) {
   new Chart(ctx, {
     type: "line",
